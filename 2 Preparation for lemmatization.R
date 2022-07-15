@@ -3,9 +3,9 @@ library(dplyr)
 library(stringr)
 
 
-#Подготовка данных
+#ГЏГ®Г¤ГЈГ®ГІГ®ГўГЄГ  Г¤Г Г­Г­Г»Гµ
 
-tweets = read.csv("C:/Users/User/Desktop/DATA/ЦПК/tweets.csv")
+tweets = read.csv("C:/Users/User/Desktop/DATA/Г–ГЏГЉ/tweets.csv")
 tweets$Time = str_sub(tweets$Time, 1, 10)
 tweets$Time = as.Date(tweets$Time)
 tweets$Tweet = gsub("@\\w+ *", "", tweets$Tweet)

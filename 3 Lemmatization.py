@@ -1,5 +1,5 @@
 import pandas as pd
-df = pd.read_csv (r'~\df.csv', sep=',', encoding='utf-8')
+df = pd.read_csv (r'~\beforenolemma.csv', sep=',', encoding='utf-8') #ubsequently, is executed for 'afternolemma'
 
 print(df.iloc[:, 2])
 

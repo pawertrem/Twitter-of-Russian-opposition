@@ -28,4 +28,4 @@ def lemmatize(doc):
 
 data = df.iloc[:, 2].apply(lemmatize)
 
-data.to_csv(r'~\df.csv', sep=',', encoding='utf-8')
+data.to_csv(r'~\before.csv', sep=',', encoding='utf-8')

@@ -43,7 +43,6 @@ beforelemma$doc_id = str_replace_all(beforelemma$doc_id, 'doc', '')
 beforelemma$doc_id = as.numeric(beforelemma$doc_id)
 beforelemma=beforelemma%>%filter(lemma!='ìî÷ü' & lemma!='ãîä' & lemma!='áàò' & lemma!='íàø' & nchar(lemma)>2)
 beforelemma$lemma=gsub('”','',beforelemma$lemma)
-write.csv(beforelemma, file="C:/Users/User/Desktop/beforelemma.csv", fileEncoding = 'UTF-8', row.names = FALSE)
 
 afterlemmas$X=rownames(afterlemmas)
 afterlemmas$Tweet=gsub("\\[|\\]|'|»|«|‘|¦|’|\\.\\.\\.|\"|-|”", "", afterlemmas$Tweet)
@@ -58,10 +57,6 @@ afterlemma = anti_join(afterlemma, stoptw, by = "lemma")
 afterlemma$doc_id = str_replace_all(afterlemma$doc_id, 'doc', '')
 afterlemma$doc_id = as.numeric(afterlemma$doc_id)
 afterlemma=afterlemma%>%filter(lemma!='ìî÷ü' & lemma!='ãîä' & lemma!='áàò' & lemma!='íàø' & nchar(lemma)>2)
-write.csv(afterlemma, file="C:/Users/User/Desktop/afterlemma.csv", fileEncoding = 'UTF-8', row.names = FALSE)
-
-beforelemma = read.csv("C:/Users/User/Desktop/beforelemma.csv", fileEncoding = 'UTF-8')
-afterlemma = read.csv("C:/Users/User/Desktop/afterlemma.csv", fileEncoding = 'UTF-8')
 
 #Word Clouds
 

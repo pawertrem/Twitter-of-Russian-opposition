@@ -1,5 +1,5 @@
 import pandas as pd
-df = pd.read_csv (r'C:\Users\User\Desktop\after.csv', sep=',', encoding='utf-8')
+df = pd.read_csv (r'~\df.csv', sep=',', encoding='utf-8')
 
 print(df.iloc[:, 2])
 
@@ -28,4 +28,4 @@ def lemmatize(doc):
 
 data = df.iloc[:, 2].apply(lemmatize)
 
-data.to_csv(r'C:\Users\User\Desktop\after.csv', sep=',', encoding='utf-8')
+data.to_csv(r'~\df.csv', sep=',', encoding='utf-8')

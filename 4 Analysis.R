@@ -22,11 +22,11 @@ library(hrbrthemes)
 
 #Preparation
 
-beforelemmas = read.csv("C:/Users/User/Desktop/before.csv", fileEncoding = 'UTF-8')
-afterlemmas = read.csv("C:/Users/User/Desktop/after.csv", fileEncoding = 'UTF-8')
+beforelemmas = read.csv("~/before.csv", fileEncoding = 'UTF-8')
+afterlemmas = read.csv("~/after.csv", fileEncoding = 'UTF-8')
 
 beforelemmas$X=rownames(beforelemmas)
-beforelemmas$Tweet=gsub("\\[|\\]|'|»|«|‘|¦|’|\\.\\.\\.|\"|-", "", beforelemmas$Tweet)
+beforelemmas$Tweet=gsub("\\[|\\]|'|В»|В«|вЂ|В¦|вЂ™|\\.\\.\\.|\"|-", "", beforelemmas$Tweet)
 beforelemmas=beforelemmas%>%filter(Tweet!="")
 beforelemmas$Tweet = iconv(beforelemmas$Tweet, to = 'UTF-8')
 Encoding(beforelemmas$Tweet)
@@ -35,18 +35,18 @@ udmodel <- udpipe_load_model(file = udmodel$file_model)
 beforelemma = udpipe(x = beforelemmas$Tweet, object='russian')
 beforelemma = beforelemma %>% filter(upos == 'NOUN'|upos == 'PROPN')%>%select(doc_id, token)
 colnames(beforelemma) = c('doc_id', 'lemma')
-stopw = c(stopwords(language = "ru"), 'это', 'который')
+stopw = c(stopwords(language = "ru"), 'ГЅГІГ®', 'ГЄГ®ГІГ®Г°Г»Г©')
 stopwen = stopwords(language = "en")
 stoptw = beforelemma %>% filter(lemma %in% stopw | lemma %in% stopwen)
 beforelemma = anti_join(beforelemma, stoptw, by = "lemma")
 beforelemma$doc_id = str_replace_all(beforelemma$doc_id, 'doc', '')
 beforelemma$doc_id = as.numeric(beforelemma$doc_id)
-beforelemma=beforelemma%>%filter(lemma!='мочь' & lemma!='год' & lemma!='бат' & lemma!='наш' & nchar(lemma)>2)
-beforelemma$lemma=gsub('”','',beforelemma$lemma)
+beforelemma=beforelemma%>%filter(lemma!='Г¬Г®Г·Гј' & lemma!='ГЈГ®Г¤' & lemma!='ГЎГ ГІ' & lemma!='Г­Г Гё' & nchar(lemma)>2)
+beforelemma$lemma=gsub('вЂќ','',beforelemma$lemma)
 write.csv(beforelemma, file="C:/Users/User/Desktop/beforelemma.csv", fileEncoding = 'UTF-8', row.names = FALSE)
 
 afterlemmas$X=rownames(afterlemmas)
-afterlemmas$Tweet=gsub("\\[|\\]|'|»|«|‘|¦|’|\\.\\.\\.|\"|-|”", "", afterlemmas$Tweet)
+afterlemmas$Tweet=gsub("\\[|\\]|'|В»|В«|вЂ|В¦|вЂ™|\\.\\.\\.|\"|-|вЂќ", "", afterlemmas$Tweet)
 afterlemmas=afterlemmas%>%filter(Tweet!="")
 afterlemmas$Tweet = iconv(afterlemmas$Tweet, to = 'UTF-8')
 Encoding(afterlemmas$Tweet)
@@ -57,7 +57,7 @@ stoptw = afterlemma %>% filter(lemma %in% stopw | lemma %in% stopwen)
 afterlemma = anti_join(afterlemma, stoptw, by = "lemma")
 afterlemma$doc_id = str_replace_all(afterlemma$doc_id, 'doc', '')
 afterlemma$doc_id = as.numeric(afterlemma$doc_id)
-afterlemma=afterlemma%>%filter(lemma!='мочь' & lemma!='год' & lemma!='бат' & lemma!='наш' & nchar(lemma)>2)
+afterlemma=afterlemma%>%filter(lemma!='Г¬Г®Г·Гј' & lemma!='ГЈГ®Г¤' & lemma!='ГЎГ ГІ' & lemma!='Г­Г Гё' & nchar(lemma)>2)
 write.csv(afterlemma, file="C:/Users/User/Desktop/afterlemma.csv", fileEncoding = 'UTF-8', row.names = FALSE)
 
 beforelemma = read.csv("C:/Users/User/Desktop/beforelemma.csv", fileEncoding = 'UTF-8')
@@ -96,7 +96,7 @@ before_top %>%
   ggplot(aes(term, beta, fill = factor(topic))) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~ topic, scales = "free") +
-  xlab('Лемма')+
+  xlab('Г‹ГҐГ¬Г¬Г ')+
   ylab('per-topic-per-word probabilities')+
   coord_flip()
 
@@ -119,7 +119,7 @@ after_top %>%
   ggplot(aes(term, beta, fill = factor(topic))) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~ topic, scales = "free")  +
-  xlab('Лемма')+
+  xlab('Г‹ГҐГ¬Г¬Г ')+
   ylab('per-topic-per-word probabilities')+
   coord_flip()
 
@@ -162,9 +162,9 @@ x = Rep_Dem_LR %>%
   ggplot(aes(lemma, logratio, fill = logratio > 0)) +
   geom_col(show.legend = TRUE) +
   coord_flip() +
-  ylab("log odds ratio (До 24.02/После 24.02)") +
-  xlab("Лемма")+
-  scale_fill_discrete(name = "", labels = c("После 24.02", "До 24.02"))
+  ylab("log odds ratio (Г„Г® 24.02/ГЏГ®Г±Г«ГҐ 24.02)") +
+  xlab("Г‹ГҐГ¬Г¬Г ")+
+  scale_fill_discrete(name = "", labels = c("ГЏГ®Г±Г«ГҐ 24.02", "Г„Г® 24.02"))
 
 x
 
@@ -178,9 +178,9 @@ mean(aftersent$score)
 sent$period=as.factor(sent$period)
 ggplot(sent)+geom_boxplot(aes(x=period, y=score))
 a=ggplot() +
-  geom_histogram(data = beforesent, aes(x = score, y=..density..), fill="#008080", col="#483D8B", alpha = 0.5)+ggtitle('До 24.02')+xlab('Эмоциональная окраска (от негативной к положительной)')+ylab('Плотность распределения')+ylim(0,2)
+  geom_histogram(data = beforesent, aes(x = score, y=..density..), fill="#008080", col="#483D8B", alpha = 0.5)+ggtitle('Г„Г® 24.02')+xlab('ГќГ¬Г®Г¶ГЁГ®Г­Г Г«ГјГ­Г Гї Г®ГЄГ°Г Г±ГЄГ  (Г®ГІ Г­ГҐГЈГ ГІГЁГўГ­Г®Г© ГЄ ГЇГ®Г«Г®Г¦ГЁГІГҐГ«ГјГ­Г®Г©)')+ylab('ГЏГ«Г®ГІГ­Г®Г±ГІГј Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї')+ylim(0,2)
 b=ggplot() +
-  geom_histogram(data = aftersent, aes(x = score, y=..density..), fill="#008080", col="#483D8B", alpha = 0.5)+ggtitle('После 24.02')+xlab('Эмоциональная окраска (от негативной к положительной)')+ylab('Плотность распределения')
+  geom_histogram(data = aftersent, aes(x = score, y=..density..), fill="#008080", col="#483D8B", alpha = 0.5)+ggtitle('ГЏГ®Г±Г«ГҐ 24.02')+xlab('ГќГ¬Г®Г¶ГЁГ®Г­Г Г«ГјГ­Г Гї Г®ГЄГ°Г Г±ГЄГ  (Г®ГІ Г­ГҐГЈГ ГІГЁГўГ­Г®Г© ГЄ ГЇГ®Г«Г®Г¦ГЁГІГҐГ«ГјГ­Г®Г©)')+ylab('ГЏГ«Г®ГІГ­Г®Г±ГІГј Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї')
 SCATS <- plot_grid(a, b)
 SCATS
 
@@ -199,17 +199,17 @@ beforesentmonths = beforesentmonths%>%mutate(month=months(as.Date(Time)))
 aftersentmonths = aftersentmonths%>%mutate(month=months(as.Date(Time)))
 beforesentmonths = beforesentmonths%>%filter(score<0)%>%select(lemma, month)%>%group_by(month)%>%count()
 aftersentmonths = aftersentmonths%>%filter(score<0)%>%select(lemma, month)%>%group_by(month)%>%count()
-beforesentmonths$month = ifelse(beforesentmonths$month=='Февраль', 'Февраль\n(до 24.02)', ifelse(beforesentmonths$month=='Июнь', 'Июнь\n(до 9-го)', beforesentmonths$month))
-aftersentmonths$month = ifelse(aftersentmonths$month=='Февраль', 'Февраль\n(после 24.02)', ifelse(aftersentmonths$month=='Июнь', 'Июнь\n(до 9-го)', aftersentmonths$month))
+beforesentmonths$month = ifelse(beforesentmonths$month=='Г”ГҐГўГ°Г Г«Гј', 'Г”ГҐГўГ°Г Г«Гј\n(Г¤Г® 24.02)', ifelse(beforesentmonths$month=='Г€ГѕГ­Гј', 'Г€ГѕГ­Гј\n(Г¤Г® 9-ГЈГ®)', beforesentmonths$month))
+aftersentmonths$month = ifelse(aftersentmonths$month=='Г”ГҐГўГ°Г Г«Гј', 'Г”ГҐГўГ°Г Г«Гј\n(ГЇГ®Г±Г«ГҐ 24.02)', ifelse(aftersentmonths$month=='Г€ГѕГ­Гј', 'Г€ГѕГ­Гј\n(Г¤Г® 9-ГЈГ®)', aftersentmonths$month))
 year22sent = rbind(beforesentmonths, aftersentmonths)
-year22sent$month=factor(year22sent$month, levels = c('Январь', 'Февраль\n(до 24.02)', 'Февраль\n(после 24.02)', 'Март', 'Апрель', 'Май', 'Июнь\n(до 9-го)'))
-year22sent = year22sent%>%filter(month!='Июнь\n(до 9-го)')
+year22sent$month=factor(year22sent$month, levels = c('ГџГ­ГўГ Г°Гј', 'Г”ГҐГўГ°Г Г«Гј\n(Г¤Г® 24.02)', 'Г”ГҐГўГ°Г Г«Гј\n(ГЇГ®Г±Г«ГҐ 24.02)', 'ГЊГ Г°ГІ', 'ГЂГЇГ°ГҐГ«Гј', 'ГЊГ Г©', 'Г€ГѕГ­Гј\n(Г¤Г® 9-ГЈГ®)'))
+year22sent = year22sent%>%filter(month!='Г€ГѕГ­Гј\n(Г¤Г® 9-ГЈГ®)')
 
 ggplot(data=year22sent, aes(x=month, y=n)) +
   geom_line(aes(group=1), color="grey") +
   geom_point(shape=21, color="black", fill="#69b3a2", size=6) +
   theme_ipsum() +
-  ggtitle("Динамика использования негативной стилистически окрашенной лексики")+
+  ggtitle("Г„ГЁГ­Г Г¬ГЁГЄГ  ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ Г­ГЁГї Г­ГҐГЈГ ГІГЁГўГ­Г®Г© Г±ГІГЁГ«ГЁГ±ГІГЁГ·ГҐГ±ГЄГЁ Г®ГЄГ°Г ГёГҐГ­Г­Г®Г© Г«ГҐГЄГ±ГЁГЄГЁ")+
   xlab('')+
   ylab('')
 

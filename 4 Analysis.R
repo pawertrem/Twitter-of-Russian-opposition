@@ -20,10 +20,12 @@ library(cowplot)
 library(xlsx)
 library(hrbrthemes)
 
-#Preparation
+#Import of data
 
 beforelemmas = read.csv("~/before.csv", fileEncoding = 'UTF-8')
 afterlemmas = read.csv("~/after.csv", fileEncoding = 'UTF-8')
+
+#Rest of preparation of data for analysis (filtering nouns and proper nouns, cleaning of stop-words that has not been removed earlier and of nonsensical characters)
 
 beforelemmas$X=rownames(beforelemmas)
 beforelemmas$Tweet=gsub("\\[|\\]|'|»|«|‘|¦|’|\\.\\.\\.|\"|-", "", beforelemmas$Tweet)

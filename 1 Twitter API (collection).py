@@ -16,16 +16,13 @@ api = tweepy.API(auth)
 
 # LET'S GET TWEETS
 
-startDate = datetime.datetime(2021, 1, 1, 00, 00, 00)
-endDate = datetime.datetime(2021, 12, 31, 00, 00, 00)
 username = "max_katz" #code is subsequenty executed for every Twitter account from a prepared list (~20 accounts)
-
 tweets=tweepy.Cursor(api.user_timeline,
                      screen_name=username,
                      include_rts=False,
                      tweet_mode='extended').items()
 
-# create dataframe
+# DataFrame
 columns = ['Time', 'User', 'Tweet']
 data = []
 for tweet in tweets:

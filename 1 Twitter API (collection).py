@@ -30,4 +30,4 @@ for tweet in tweets:
 
 df = pd.DataFrame(data, columns=columns)
 
-df.to_csv('katz.csv')
+df.to_csv('katz.csv') #after collection of tweets from all necesarry accounts, they are binded in a single dataframe ('rbind' in R) 
